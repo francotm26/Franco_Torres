@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar Sesión - Colegio Data Systems Ingenieros</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <style>
+    body {
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background: rgba(0,0,0,0.5);
+      padding: 30px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+    }
+
+    .user-type-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .user-type-buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 10px;
+      border: none;
+      background: #00bcd4;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .user-type-buttons button.active {
+      background: #00796b;
+    }
+
+    .login-container input {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .login-container button.submit-btn {
+      background: #4caf50;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Iniciar Sesión como:</h2>
+    <div class="user-type-buttons">
+      <button type="button" class="tipo-btn" data-tipo="administrador">Administrador</button>
+      <button type="button" class="tipo-btn" data-tipo="docente">Docente</button>
+      <button type="button" class="tipo-btn" data-tipo="estudiante">Estudiante</button>
+    </div>
+
+    <form id="form-login">
+      <input type="text" id="usuario" placeholder="Usuario (correo)" required />
+      <input type="password" id="contrasena" placeholder="Contraseña" required />
+      <input type="hidden" id="tipo-usuario" name="tipo" value="" />
+      <button type="submit" class="submit-btn">Iniciar Sesión</button>
+    </form>
+  </div>
+
+  <script>
+    const tipoBtns = document.querySelectorAll('.tipo-btn');
+    const tipoInput = document.getElementById('tipo-usuario');
+
+    tipoBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tipoBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tipoInput.value = btn.dataset.tipo;
+      });
+    });
+
+    // Listas de usuarios y contraseñas (correo y password) por tipo
+
+    const usuarios = {
+      estudiante: [
+        { correo: 'juantorres@dsicolegio.edu.pe', pass: 'juanT7213' },
+        { correo: 'analopez@dsicolegio.edu.pe', pass: 'anaL7213' },
+        { correo: 'diegocruz@dsicolegio.edu.pe', pass: 'diegoC7213' },
+        { correo: 'marisaruiz@dsicolegio.edu.pe', pass: 'marisaR7213' },
+        { correo: 'luiszapata@dsicolegio.edu.pe', pass: 'luisZ7213' },
+        { correo: 'karenflores@dsicolegio.edu.pe', pass: 'karenF7213' },
+        { correo: 'josemendoza@dsicolegio.edu.pe', pass: 'joseM7213' },
+        { correo: 'elenaramirez@dsicolegio.edu.pe', pass: 'elenaR7213' },
+        { correo: 'francoherrera@dsicolegio.edu.pe', pass: 'francoH7213' },
+        { correo: 'nataliasalas@dsicolegio.edu.pe', pass: 'nataliaS7213' }
+      ],
+      docente: [
+        { correo: 'carlostorres@dsicolegio.edu.pe', pass: 'carlosT4512' },
+        { correo: 'miriamquiroz@dsicolegio.edu.pe', pass: 'miriamQ4523' },
+        { correo: 'josealvarez@dsicolegio.edu.pe', pass: 'joseA4534' },
+        { correo: 'sandraramirez@dsicolegio.edu.pe', pass: 'sandraR4545' },
+        { correo: 'julioflores@dsicolegio.edu.pe', pass: 'julioF4556' },
+        { correo: 'teresahuaman@dsicolegio.edu.pe', pass: 'teresaH4567' },
+        { correo: 'miguelvargas@dsicolegio.edu.pe', pass: 'miguelV4578' },
+        { correo: 'rosarioparedes@dsicolegio.edu.pe', pass: 'rosarioP4589' },
+        { correo: 'henrycastaneda@dsicolegio.edu.pe', pass: 'henryC4590' },
+        { correo: 'carlavalverde@dsicolegio.edu.pe', pass: 'carlaV4601' }
+      ],
+      administrador: [
+        { correo: 'veronicapalomino@dsicolegio.edu.pe', pass: 'veronicaP6123' },
+        { correo: 'martingutierrez@dsicolegio.edu.pe', pass: 'martinG6134' }
+      ]
+    };
+
+    document.getElementById('form-login').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const tipo = tipoInput.value.toLowerCase();
+      const usuario = document.getElementById('usuario').value.trim().toLowerCase();
+      const contrasena = document.getElementById('contrasena').value;
+
+      if (!tipo) {
+        alert("Por favor, seleccione un tipo de usuario.");
+        return;
+      }
+
+      if (!usuario || !contrasena) {
+        alert("Por favor, complete todos los campos.");
+        return;
+      }
+
+      const listaUsuarios = usuarios[tipo];
+      if (!listaUsuarios) {
+        alert("Tipo de usuario no válido.");
+        return;
+      }
+
+      const usuarioValido = listaUsuarios.find(u => u.correo.toLowerCase() === usuario && u.pass === contrasena);
+
+      if (usuarioValido) {
+        // Usuario y contraseña válidos, redirigir según tipo
+        switch (tipo) {
+          case 'administrador':
+            window.location.href = 'administrativo.html';
+            break;
+          case 'docente':
+            window.location.href = 'instructor.html';
+            break;
+          case 'estudiante':
+            window.location.href = 'alumno.html';
+            break;
+          default:
+            alert('Tipo de usuario no válido');
+        }
+      } else {
+        alert('Usuario o contraseña incorrectos para el tipo seleccionado.');
+      }
+    });
+  </script>
+</body>
+</html>

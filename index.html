@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colegio Data Systems Ingenieros</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <style>
+    /* Estilo para el iframe responsivo */
+    #ubicacion iframe {
+      width: 100%;
+      height: 400px;
+      border: 0;
+    }
+    /* Ocultar asistente virtual por defecto para evitar flash */
+    #asistente-virtual {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo burbujas -->
+  <div id="background-bubbles"></div>
+
+  <!-- Encabezado con video -->
+  <header>
+    <video autoplay muted loop playsinline id="bg-video">
+      <source src="tu_video.mp4" type="video/mp4" />
+      Tu navegador no soporta videos HTML5.
+    </video>
+    <div class="encabezado-texto">
+      <h1 id="titulo">Colegio Data Systems Ingenieros</h1>
+      <p class="frase">
+        Data Systems: donde el talento y la tecnología se conectan para transformar tu historia en un éxito.
+      </p>
+    </div>
+    <a href="login.html" class="btn-login">Iniciar Sesión</a>
+  </header>
+
+  <!-- Botón flotante para cambiar modo -->
+  <button id="modoToggle" title="Cambiar modo" aria-label="Cambiar modo oscuro">
+    <span id="iconoModo">🌙</span>
+  </button>
+
+  <!-- ¿Quiénes Somos? -->
+  <section id="quienes-somos">
+    <div class="tarjeta">
+      <div class="contenido">
+        <h2 class="titulo-rgb">¿Quiénes Somos?</h2>
+        <p>
+          Somos una institución educativa que forma líderes en tecnología, ciencia y valores. Nuestro enfoque innovador permite que los estudiantes desarrollen su talento desde una edad temprana.
+        </p>
+        <p>
+          <strong>Misión:</strong> Educar integralmente a los estudiantes con base en la excelencia académica y humana.
+        </p>
+      </div>
+      <div class="imagen">
+        <img src="quienes.png" alt="Nosotros" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Historia -->
+  <section id="historia">
+    <h2>Historia del Colegio</h2>
+    <p>
+      Fundado en el año 2010, el Colegio Data Systems ha sido pionero en el uso de tecnología educativa en la región sur del Perú. Nuestro crecimiento constante se refleja en las múltiples generaciones formadas con éxito.
+    </p>
+  </section>
+
+  <!-- Carrusel de Cursos -->
+  <section id="areas-academicas">
+    <h2>Áreas Académicas</h2>
+    <div class="carrusel-contenedor">
+      <div class="carrusel" id="carrusel-cursos">
+        <div class="item">Robótica</div>
+        <div class="item">Ciencias</div>
+        <div class="item">Matemática</div>
+        <div class="item">Comunicación</div>
+        <div class="item">Arte</div>
+        <div class="item">Educación Física</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chatea con Nosotros -->
+  <section id="contacto-rapido">
+    <h2>Chatea con Nosotros</h2>
+    <p>¿Tienes alguna duda o necesitas más información? ¡Estamos aquí para ayudarte!</p>
+    <div class="botones-chat">
+      <a href="tel:+51945393561" class="btn-llamar">Llamar</a>
+      <a href="https://wa.me/51945393561" target="_blank" class="btn-whatsapp" rel="noopener noreferrer">Escribir por WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- Mapa -->
+  <section id="ubicacion">
+    <h2>Ubicación</h2>
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7739.9182113534225!2d-75.75932087178654!3d-14.079591417402309!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9110e2fabeb75027%3A0x833703db73d3c621!2sColegio%20Data%20System&#39;s%20Ingenieros!5e0!3m2!1ses-419!2spe!4v1747450421689!5m2!1ses-419!2spe"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+    <a href="https://maps.google.com?q=Colegio+Data+Systems+Ingenieros" target="_blank" class="btn-viaje" rel="noopener noreferrer">Iniciar viaje</a>
+  </section>
+
+  <!-- Pie de Página -->
+  <footer>
+    <div class="footer-contenido">
+      <div class="footer-izquierda">
+        <p>&copy; 2025 Colegio Data Systems Ingenieros. Todos los derechos reservados.</p>
+        <p>Autor: Carlos Torres</p>
+        <div class="redes-sociales">
+          <a href="https://www.facebook.com/DataSystemsIngenieros" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://www.instagram.com/colegio.dsi/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.tiktok.com/@colegio.dsi" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </div>
+        <a href="politica.html">Política de Privacidad</a>
+      </div>
+      <div class="footer-derecha">
+        <img src="logo-colegio.jpg" alt="Logo Colegio" />
+      </div>
+    </div>
+  </footer>
+
+  <!-- Asistente Virtual -->
+  <div id="asistente-virtual" class="asistente-virtual">
+    🤖 Hola, ¿cómo puedo ayudarte?
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      // Botón de cambio de tema
+      document.getElementById("modoToggle").addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        const icono = document.getElementById("iconoModo");
+        icono.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+      });
+
+      // Carrusel automático
+      const carrusel = document.getElementById("carrusel-cursos");
+      setInterval(() => {
+        carrusel.scrollBy({ left: 250, behavior: "smooth" });
+        if (carrusel.scrollLeft + carrusel.clientWidth >= carrusel.scrollWidth) {
+          carrusel.scrollTo({ left: 0, behavior: "smooth" });
+        }
+      }, 3000);
+
+      // Mostrar asistente virtual al cargar
+      document.getElementById("asistente-virtual").style.display = "block";
+    });
+  </script>
+</body>
+</html>
