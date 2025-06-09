@@ -2,208 +2,416 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Colegio Data Systems Ingenieros</title>
-  <link rel="stylesheet" href="estilos.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel Administrativo - Colegio Data Systems Ingenieros</title>
   <style>
-    /* Estilo para el iframe responsivo */
-    #ubicacion iframe {
-      width: 100%;
-      height: 400px;
-      border: 0;
-    }
-    /* Ocultar asistente virtual por defecto para evitar flash */
-    #asistente-virtual {
-      display: none;
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #e0f7fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      overflow-x: hidden;
     }
 
-    /* Fondo burbujas */
-    #background-bubbles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: -1;
-      overflow: hidden;
-      background: #0d47a1; /* azul oscuro de fondo, ajusta al gusto */
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25em;
+      opacity: 0;
+      animation: fadeInDown 1.2s forwards;
+      text-shadow: 0 0 15px #00bcd4;
+      text-align: center;
     }
-    #background-bubbles .bubble {
-      position: absolute;
-      bottom: -100px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 50%;
-      animation-name: rise;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
+
+    p.subtitle {
+      font-size: 1.2rem;
+      color: #a4d4e6;
+      margin-bottom: 2em;
+      opacity: 0;
+      animation: fadeInDown 1.2s forwards;
+      animation-delay: 0.4s;
+      text-align: center;
     }
-    @keyframes rise {
-      0% {
-        transform: translateY(0);
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-110vh);
+
+    @keyframes fadeInDown {
+      from {
         opacity: 0;
+        transform: translateY(-25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .panel {
+      background: rgba(0, 44, 58, 0.85);
+      border-radius: 15px;
+      box-shadow: 0 0 25px #00796b;
+      width: 100%;
+      max-width: 1000px;
+      padding: 25px;
+      animation: fadeInUp 1.5s forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .panel h2 {
+      margin-bottom: 20px;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff;
+    }
+
+    .btn {
+      background: #00bcd4;
+      border: none;
+      padding: 12px 22px;
+      color: #003d40;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 188, 212, 0.6);
+      margin-right: 15px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn:hover {
+      background: #00796b;
+      color: #e0f7fa;
+      box-shadow: 0 7px 20px rgba(0, 121, 107, 0.9);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+      background: #004d40;
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      color: #b2dfdb;
+      font-weight: 500;
+    }
+
+    th {
+      background: #00796b;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #00695c;
+      transition: background-color 0.25s ease;
+      cursor: default;
+    }
+    tbody tr:hover {
+      background-color: #004d40cc;
+    }
+
+    .action-btn {
+      background: #00e5ff;
+      color: #003d40;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-right: 6px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background-color: #00acc1;
+      color: #e0f7fa;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #004d40;
+      padding: 25px 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 25px #00796b;
+      text-align: center;
+      color: #b2dfdb;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 15px;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff;
+    }
+
+    .modal-content label {
+      display: block;
+      margin: 12px 0 6px;
+      text-align: left;
+      font-weight: 600;
+      color: #a4d4e6;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="email"],
+    .modal-content select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 15px;
+    }
+
+    .modal-content button {
+      padding: 12px 22px;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background-color: #00bcd4;
+      color: #003d40;
+      box-shadow: 0 5px 15px rgba(0, 188, 212, 0.6);
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+    .modal-content button:hover {
+      background-color: #00796b;
+      color: #e0f7fa;
+    }
+
+    .modal-close {
+      background: #ff5252;
+    }
+    .modal-close:hover {
+      background: #d32f2f;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .panel {
+        padding: 20px 15px;
+      }
+      table, th, td {
+        font-size: 0.9rem;
+      }
+      .btn {
+        margin-bottom: 10px;
+        width: 100%;
+        margin-right: 0;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Fondo burbujas -->
-  <div id="background-bubbles"></div>
+  <h1>Bienvenido al Panel Administrativo</h1>
+  <p class="subtitle">Gestiona todas las cuentas y usuarios del Colegio Data Systems Ingenieros</p>
 
-  <!-- Encabezado con video -->
-<header>
-  <video autoplay muted loop playsinline id="bg-video" preload="auto">
-    <source src="tu_video.mp4" type="video/mp4" />
-    Tu navegador no soporta videos HTML5.
-  </video>
-  <div class="encabezado-texto">
-    <h1 id="titulo">Colegio Data Systems Ingenieros</h1>
-    <p class="frase">
-      Data Systems: donde el talento y la tecnología se conectan para transformar tu historia en un éxito.
-    </p>
-    <a href="login.html" class="btn-login">Iniciar Sesión</a>
+  <div class="panel" role="region" aria-label="Panel de control administrativo">
+    <h2>Usuarios Registrados</h2>
+
+    <div>
+      <button class="btn" id="btnAgregar">Agregar Usuario</button>
+      <button class="btn" id="btnRefrescar">Refrescar Lista</button>
+    </div>
+
+    <table aria-describedby="tablaUsuariosDesc">
+      <caption id="tablaUsuariosDesc" class="sr-only">Listado de usuarios registrados con opciones para editar y eliminar</caption>
+      <thead>
+        <tr>
+          <th>Correo</th>
+          <th>Tipo de Usuario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="usuariosTabla">
+        <!-- Usuarios se cargarán aquí -->
+      </tbody>
+    </table>
   </div>
-</header>
 
-
-  <!-- Botón flotante para cambiar modo -->
-  <button id="modoToggle" title="Cambiar modo" aria-label="Cambiar modo oscuro" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 10;">
-    <span id="iconoModo">🌙</span>
-  </button>
-
-  <!-- ¿Quiénes Somos? -->
-  <section id="quienes-somos">
-    <div class="tarjeta">
-      <div class="contenido">
-        <h2 class="titulo-rgb">¿Quiénes Somos?</h2>
-        <p>
-          Somos una institución educativa que forma líderes en tecnología, ciencia y valores. Nuestro enfoque innovador permite que los estudiantes desarrollen su talento desde una edad temprana.
-        </p>
-        <p>
-          <strong>Misión:</strong> Educar integralmente a los estudiantes con base en la excelencia académica y humana.
-        </p>
-      </div>
-      <div class="imagen">
-        <img src="quienes.png" alt="Nosotros" />
-      </div>
-    </div>
-  </section>
-
-  <!-- Historia -->
-  <section id="historia">
-    <h2>Historia del Colegio</h2>
-    <p>
-      Fundado en el año 2010, el Colegio Data Systems ha sido pionero en el uso de tecnología educativa en la región sur del Perú. Nuestro crecimiento constante se refleja en las múltiples generaciones formadas con éxito.
-    </p>
-  </section>
-
-  <!-- Carrusel de Cursos -->
-  <section id="areas-academicas">
-    <h2>Áreas Académicas</h2>
-    <div class="carrusel-contenedor">
-      <div class="carrusel" id="carrusel-cursos">
-        <div class="item">Robótica</div>
-        <div class="item">Ciencias</div>
-        <div class="item">Matemática</div>
-        <div class="item">Comunicación</div>
-        <div class="item">Arte</div>
-        <div class="item">Educación Física</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Chatea con Nosotros -->
-  <section id="contacto-rapido">
-    <h2>Chatea con Nosotros</h2>
-    <p>¿Tienes alguna duda o necesitas más información? ¡Estamos aquí para ayudarte!</p>
-    <div class="botones-chat">
-      <a href="tel:+51945393561" class="btn-llamar">Llamar</a>
-      <a href="https://wa.me/51945393561" target="_blank" class="btn-whatsapp" rel="noopener noreferrer">Escribir por WhatsApp</a>
-    </div>
-  </section>
-
-  <!-- Mapa -->
-  <section id="ubicacion">
-    <h2>Ubicación</h2>
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7739.9182113534225!2d-75.75932087178654!3d-14.079591417402309!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9110e2fabeb75027%3A0x833703db73d3c621!2sColegio%20Data%20System&#39;s%20Ingenieros!5e0!3m2!1ses-419!2spe!4v1747450421689!5m2!1ses-419!2spe"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-    ></iframe>
-    <a href="https://maps.google.com?q=Colegio+Data+Systems+Ingenieros" target="_blank" class="btn-viaje" rel="noopener noreferrer">Iniciar viaje</a>
-  </section>
-
-  <!-- Pie de Página -->
-  <footer>
-    <div class="footer-contenido">
-      <div class="footer-izquierda">
-        <p>&copy; 2025 Colegio Data Systems Ingenieros. Todos los derechos reservados.</p>
-        <p>Autor: Carlos Torres</p>
-        <div class="redes-sociales">
-          <a href="https://www.facebook.com/DataSystemsIngenieros" target="_blank" rel="noopener noreferrer">Facebook</a>
-          <a href="https://www.instagram.com/colegio.dsi/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.tiktok.com/@colegio.dsi" target="_blank" rel="noopener noreferrer">TikTok</a>
+  <!-- Modal para agregar o editar usuario -->
+  <div class="modal" id="modalUsuario" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+    <div class="modal-content">
+      <h3 id="modalTitulo">Agregar Usuario</h3>
+      <form id="formUsuario">
+        <label for="correoUsuario">Correo electrónico</label>
+        <input type="email" id="correoUsuario" name="correoUsuario" required placeholder="usuario@correo.com" />
+        <label for="tipoUsuario">Tipo de usuario</label>
+        <select id="tipoUsuario" name="tipoUsuario" required>
+          <option value="" disabled selected>Selecciona tipo</option>
+          <option value="administrativo">Administrativo</option>
+          <option value="instructor">Instructor</option>
+          <option value="alumno">Alumno</option>
+        </select>
+        <div style="margin-top:20px;">
+          <button type="submit" id="btnGuardar">Guardar</button>
+          <button type="button" class="modal-close" id="btnCancelar">Cancelar</button>
         </div>
-        <a href="politica.html">Política de Privacidad</a>
-      </div>
-      <div class="footer-derecha">
-        <img src="logo-colegio.jpg" alt="Logo Colegio" />
-      </div>
+      </form>
     </div>
-  </footer>
-
-  <!-- Asistente Virtual -->
-  <div id="asistente-virtual" class="asistente-virtual">
-    🤖 Hola, ¿cómo puedo ayudarte?
   </div>
 
-  <!-- Scripts -->
   <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      // Botón de cambio de tema
-      document.getElementById("modoToggle").addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        const icono = document.getElementById("iconoModo");
-        icono.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+    (() => {
+      // Usuarios por defecto, incluyendo los admins que mencionaste
+      let usuarios = [
+        { correo: "wilfredo@dsingenieros.com", tipo: "administrativo" },
+        { correo: "francisco@dsingenieros.com", tipo: "administrativo" },
+        { correo: "dina@dsingenieros.com", tipo: "administrativo" }
+      ];
+
+      const usuariosTabla = document.getElementById("usuariosTabla");
+      const modal = document.getElementById("modalUsuario");
+      const formUsuario = document.getElementById("formUsuario");
+      const correoInput = document.getElementById("correoUsuario");
+      const tipoSelect = document.getElementById("tipoUsuario");
+      const modalTitulo = document.getElementById("modalTitulo");
+      const btnGuardar = document.getElementById("btnGuardar");
+      const btnCancelar = document.getElementById("btnCancelar");
+      const btnAgregar = document.getElementById("btnAgregar");
+      const btnRefrescar = document.getElementById("btnRefrescar");
+
+      let editarIndex = null;
+
+      function mostrarUsuarios() {
+        usuariosTabla.innerHTML = "";
+        usuarios.forEach((usuario, i) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${usuario.correo}</td>
+            <td style="text-transform: capitalize;">${usuario.tipo}</td>
+            <td>
+              <button class="action-btn" data-accion="editar" data-index="${i}" aria-label="Editar usuario ${usuario.correo}">Editar</button>
+              <button class="action-btn" data-accion="eliminar" data-index="${i}" aria-label="Eliminar usuario ${usuario.correo}">Eliminar</button>
+            </td>
+          `;
+          usuariosTabla.appendChild(tr);
+        });
+      }
+
+      function abrirModal(editar = false, index = null) {
+        modal.classList.add("active");
+        if (editar) {
+          modalTitulo.textContent = "Editar Usuario";
+          const usuario = usuarios[index];
+          correoInput.value = usuario.correo;
+          tipoSelect.value = usuario.tipo;
+          editarIndex = index;
+          correoInput.disabled = true; // No se puede cambiar correo al editar para mantener consistencia
+        } else {
+          modalTitulo.textContent = "Agregar Usuario";
+          formUsuario.reset();
+          editarIndex = null;
+          correoInput.disabled = false;
+        }
+        correoInput.focus();
+      }
+
+      function cerrarModal() {
+        modal.classList.remove("active");
+      }
+
+      // Evento para botones editar/eliminar dentro de la tabla
+      usuariosTabla.addEventListener("click", e => {
+        if (e.target.tagName === "BUTTON") {
+          const accion = e.target.dataset.accion;
+          const index = Number(e.target.dataset.index);
+          if (accion === "editar") {
+            abrirModal(true, index);
+          } else if (accion === "eliminar") {
+            if (confirm(`¿Seguro que deseas eliminar al usuario ${usuarios[index].correo}?`)) {
+              usuarios.splice(index, 1);
+              mostrarUsuarios();
+            }
+          }
+        }
       });
 
-      // Carrusel automático
-      const carrusel = document.getElementById("carrusel-cursos");
-      setInterval(() => {
-        carrusel.scrollBy({ left: 250, behavior: "smooth" });
-        if (carrusel.scrollLeft + carrusel.clientWidth >= carrusel.scrollWidth) {
-          carrusel.scrollTo({ left: 0, behavior: "smooth" });
+      // Abrir modal para agregar usuario
+      btnAgregar.addEventListener("click", () => abrirModal(false));
+
+      // Cerrar modal con botón cancelar
+      btnCancelar.addEventListener("click", cerrarModal);
+
+      // Refrescar tabla
+      btnRefrescar.addEventListener("click", mostrarUsuarios);
+
+      // Guardar usuario al enviar formulario
+      formUsuario.addEventListener("submit", e => {
+        e.preventDefault();
+        const correo = correoInput.value.trim().toLowerCase();
+        const tipo = tipoSelect.value;
+
+        // Validar correo no repetido al agregar nuevo
+        if (editarIndex === null && usuarios.some(u => u.correo === correo)) {
+          alert("Ya existe un usuario con ese correo.");
+          return;
         }
-      }, 3000);
 
-      // Mostrar asistente virtual al cargar
-      document.getElementById("asistente-virtual").style.display = "block";
+        if (editarIndex !== null) {
+          usuarios[editarIndex].tipo = tipo;
+        } else {
+          usuarios.push({ correo, tipo });
+        }
 
-      // Crear burbujas animadas
-      const background = document.getElementById("background-bubbles");
-      const bubblesCount = 40;
+        mostrarUsuarios();
+        cerrarModal();
+      });
 
-      for (let i = 0; i < bubblesCount; i++) {
-        const bubble = document.createElement("div");
-        bubble.classList.add("bubble");
-        // Tamaño aleatorio 10px a 40px
-        const size = Math.random() * 30 + 10;
-        bubble.style.width = size + "px";
-        bubble.style.height = size + "px";
-        // Posición horizontal aleatoria dentro de la pantalla
-        bubble.style.left = Math.random() * 100 + "vw";
-        // Velocidad y duración de subida aleatoria para la animación rise
-        const duration = Math.random() * 10 + 10; // 10s a 20s
-        bubble.style.animationDuration = duration + "s";
-        // Delay para escalonar las burbujas
-        bubble.style.animationDelay = (Math.random() * 20) + "s";
-        background.appendChild(bubble);
-      }
-    });
+      // Cerrar modal con Escape
+      window.addEventListener("keydown", e => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+          cerrarModal();
+        }
+      });
+
+      // Inicializar lista usuarios
+      mostrarUsuarios();
+    })();
   </script>
 </body>
 </html>
