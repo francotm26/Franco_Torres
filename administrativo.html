@@ -3,310 +3,415 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iniciar Sesión - Colegio Data Systems Ingenieros</title>
+  <title>Panel Administrativo - Colegio Data Systems Ingenieros</title>
   <style>
-    /* Reset básico */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
     body {
-      height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #e0f7fa;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      color: #fff;
-      background: #0f2027;
-      overflow: hidden;
-      position: relative;
+      padding: 30px 20px;
+      overflow-x: hidden;
     }
 
-    /* Fondo espiral animado */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 120vmax;
-      height: 120vmax;
-      background: conic-gradient(
-        from 0deg,
-        #00e5ff 0deg 45deg,
-        transparent 45deg 90deg,
-        #00e5ff 90deg 135deg,
-        transparent 135deg 180deg,
-        #00e5ff 180deg 225deg,
-        transparent 225deg 270deg,
-        #00e5ff 270deg 315deg,
-        transparent 315deg 360deg
-      );
-      border-radius: 50%;
-      transform: translate(-50%, -50%) rotate(0deg);
-      animation: girar 60s linear infinite;
-      opacity: 0.12;
-      z-index: -1;
-      filter: blur(40px);
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25em;
+      opacity: 0;
+      animation: fadeInDown 1.2s forwards;
+      text-shadow: 0 0 15px #00bcd4;
+      text-align: center;
     }
 
-    @keyframes girar {
+    p.subtitle {
+      font-size: 1.2rem;
+      color: #a4d4e6;
+      margin-bottom: 2em;
+      opacity: 0;
+      animation: fadeInDown 1.2s forwards;
+      animation-delay: 0.4s;
+      text-align: center;
+    }
+
+    @keyframes fadeInDown {
       from {
-        transform: translate(-50%, -50%) rotate(0deg);
+        opacity: 0;
+        transform: translateY(-25px);
       }
       to {
-        transform: translate(-50%, -50%) rotate(360deg);
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
-    .login-container {
-      background: rgba(0, 0, 0, 0.75);
-      padding: 40px 30px;
+    .panel {
+      background: rgba(0, 44, 58, 0.85);
       border-radius: 15px;
-      width: 360px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-      text-align: center;
-      transition: background-color 0.3s ease;
-      z-index: 1;
-      position: relative;
+      box-shadow: 0 0 25px #00796b;
+      width: 100%;
+      max-width: 1000px;
+      padding: 25px;
+      animation: fadeInUp 1.5s forwards;
     }
 
-    .login-container:hover {
-      background: rgba(0, 0, 0, 0.85);
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .login-container h2 {
-      font-size: 1.8rem;
-      margin-bottom: 25px;
-      letter-spacing: 1.2px;
-      font-weight: 700;
+    .panel h2 {
+      margin-bottom: 20px;
       color: #00e5ff;
       text-shadow: 0 0 10px #00e5ff;
     }
 
-    .user-type-buttons {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 30px;
-    }
-
-    .user-type-buttons button {
-      flex: 1;
-      padding: 12px 0;
+    .btn {
+      background: #00bcd4;
       border: none;
-      border-radius: 8px;
-      font-weight: 600;
+      padding: 12px 22px;
+      color: #003d40;
+      font-weight: 700;
       font-size: 1rem;
-      color: #00bcd4;
-      background: rgba(0, 188, 212, 0.15);
+      border-radius: 12px;
       cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-      box-shadow: inset 0 0 0 2px #00bcd4;
-      user-select: none;
+      box-shadow: 0 5px 15px rgba(0, 188, 212, 0.6);
+      margin-right: 15px;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    .user-type-buttons button:hover:not(.active) {
-      background-color: #00bcd4;
-      color: #fff;
-      box-shadow: 0 0 12px #00bcd4;
-    }
-
-    .user-type-buttons button.active {
-      background-color: #00796b;
+    .btn:hover {
+      background: #00796b;
       color: #e0f7fa;
-      box-shadow: 0 0 15px #00796b;
+      box-shadow: 0 7px 20px rgba(0, 121, 107, 0.9);
     }
 
-    form input[type="text"],
-    form input[type="password"] {
+    table {
       width: 100%;
-      padding: 14px 15px;
-      margin-bottom: 18px;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+      background: #004d40;
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      color: #b2dfdb;
+      font-weight: 500;
+    }
+
+    th {
+      background: #00796b;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #00695c;
+      transition: background-color 0.25s ease;
+      cursor: default;
+    }
+    tbody tr:hover {
+      background-color: #004d40cc;
+    }
+
+    .action-btn {
+      background: #00e5ff;
+      color: #003d40;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-right: 6px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background-color: #00acc1;
+      color: #e0f7fa;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #004d40;
+      padding: 25px 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 25px #00796b;
+      text-align: center;
+      color: #b2dfdb;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 15px;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff;
+    }
+
+    .modal-content label {
+      display: block;
+      margin: 12px 0 6px;
+      text-align: left;
+      font-weight: 600;
+      color: #a4d4e6;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="email"],
+    .modal-content select {
+      width: 100%;
+      padding: 10px;
       border-radius: 8px;
       border: none;
       font-size: 1rem;
       outline: none;
-      transition: box-shadow 0.3s ease;
+      margin-bottom: 15px;
     }
 
-    form input[type="text"]:focus,
-    form input[type="password"]:focus {
-      box-shadow: 0 0 10px #00bcd4;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      font-size: 1.1rem;
+    .modal-content button {
+      padding: 12px 22px;
       font-weight: 700;
-      color: white;
-      background: linear-gradient(45deg, #4caf50, #087f23);
+      border-radius: 12px;
       border: none;
-      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(72, 180, 97, 0.6);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      background-color: #00bcd4;
+      color: #003d40;
+      box-shadow: 0 5px 15px rgba(0, 188, 212, 0.6);
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+    .modal-content button:hover {
+      background-color: #00796b;
+      color: #e0f7fa;
     }
 
-    .submit-btn:hover {
-      background: linear-gradient(45deg, #087f23, #4caf50);
-      box-shadow: 0 8px 20px rgba(72, 180, 97, 0.9);
+    .modal-close {
+      background: #ff5252;
+    }
+    .modal-close:hover {
+      background: #d32f2f;
     }
 
     /* Responsive */
-    @media (max-width: 400px) {
-      .login-container {
-        width: 90%;
-        padding: 30px 20px;
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
       }
-
-      .user-type-buttons button {
+      .panel {
+        padding: 20px 15px;
+      }
+      table, th, td {
         font-size: 0.9rem;
-        padding: 10px 0;
       }
-
-      .submit-btn {
-        font-size: 1rem;
-        padding: 12px;
+      .btn {
+        margin-bottom: 10px;
+        width: 100%;
+        margin-right: 0;
       }
     }
   </style>
 </head>
 <body>
-  <div class="login-container" role="main" aria-label="Formulario de inicio de sesión">
-    <h2>Iniciar Sesión como:</h2>
-    <div class="user-type-buttons" role="radiogroup" aria-label="Seleccionar tipo de usuario">
-      <button type="button" class="tipo-btn" data-tipo="administrador" role="radio" aria-checked="false" tabindex="0">Administrador</button>
-      <button type="button" class="tipo-btn" data-tipo="docente" role="radio" aria-checked="false" tabindex="-1">Docente</button>
-      <button type="button" class="tipo-btn" data-tipo="estudiante" role="radio" aria-checked="false" tabindex="-1">Estudiante</button>
+  <h1>Bienvenido al Panel Administrativo</h1>
+  <p class="subtitle">Gestiona todas las cuentas y usuarios del Colegio Data Systems Ingenieros</p>
+
+  <div class="panel" role="region" aria-label="Panel de control administrativo">
+    <h2>Usuarios Registrados</h2>
+
+    <div>
+      <button class="btn" id="btnAgregar">Agregar Usuario</button>
+      <button class="btn" id="btnRefrescar">Refrescar Lista</button>
     </div>
 
-    <form id="form-login" aria-describedby="form-instructions">
-      <p id="form-instructions" class="sr-only">Complete el usuario y la contraseña, y seleccione el tipo de usuario.</p>
-      <input type="text" id="usuario" placeholder="Usuario (correo)" required aria-required="true" autocomplete="username" />
-      <input type="password" id="contrasena" placeholder="Contraseña" required aria-required="true" autocomplete="current-password" />
-      <input type="hidden" id="tipo-usuario" name="tipo" value="" />
-      <button type="submit" class="submit-btn">Iniciar Sesión</button>
-    </form>
+    <table aria-describedby="tablaUsuariosDesc">
+      <caption id="tablaUsuariosDesc" class="sr-only">Listado de usuarios registrados con opciones para editar y eliminar</caption>
+      <thead>
+        <tr>
+          <th>Correo</th>
+          <th>Tipo de Usuario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="usuariosTabla">
+        <!-- Usuarios se cargarán aquí -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para agregar o editar usuario -->
+  <div class="modal" id="modalUsuario" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+    <div class="modal-content">
+      <h3 id="modalTitulo">Agregar Usuario</h3>
+      <form id="formUsuario">
+        <label for="correoUsuario">Correo electrónico</label>
+        <input type="email" id="correoUsuario" name="correoUsuario" required placeholder="usuario@correo.com" />
+        <label for="tipoUsuario">Tipo de usuario</label>
+        <select id="tipoUsuario" name="tipoUsuario" required>
+          <option value="" disabled selected>Selecciona tipo</option>
+          <option value="administrativo">Administrativo</option>
+          <option value="instructor">Instructor</option>
+          <option value="alumno">Alumno</option>
+        </select>
+        <div style="margin-top:20px;">
+          <button type="submit" id="btnGuardar">Guardar</button>
+          <button type="button" class="modal-close" id="btnCancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script>
-    const tipoBtns = document.querySelectorAll('.tipo-btn');
-    const tipoInput = document.getElementById('tipo-usuario');
+    (() => {
+      // Usuarios por defecto, incluyendo los admins que mencionaste
+      let usuarios = [
+        { correo: "wilfredo@dsingenieros.com", tipo: "administrativo" },
+        { correo: "francisco@dsingenieros.com", tipo: "administrativo" },
+        { correo: "dina@dsingenieros.com", tipo: "administrativo" }
+      ];
 
-    // Función para manejar selección con teclado y mouse
-    tipoBtns.forEach((btn, idx) => {
-      btn.addEventListener('click', () => {
-        seleccionarTipo(idx);
-      });
+      const usuariosTabla = document.getElementById("usuariosTabla");
+      const modal = document.getElementById("modalUsuario");
+      const formUsuario = document.getElementById("formUsuario");
+      const correoInput = document.getElementById("correoUsuario");
+      const tipoSelect = document.getElementById("tipoUsuario");
+      const modalTitulo = document.getElementById("modalTitulo");
+      const btnGuardar = document.getElementById("btnGuardar");
+      const btnCancelar = document.getElementById("btnCancelar");
+      const btnAgregar = document.getElementById("btnAgregar");
+      const btnRefrescar = document.getElementById("btnRefrescar");
 
-      btn.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          let nextIdx = (idx + 1) % tipoBtns.length;
-          tipoBtns[nextIdx].focus();
-          seleccionarTipo(nextIdx);
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          let prevIdx = (idx - 1 + tipoBtns.length) % tipoBtns.length;
-          tipoBtns[prevIdx].focus();
-          seleccionarTipo(prevIdx);
-        }
-      });
-    });
+      let editarIndex = null;
 
-    function seleccionarTipo(indice) {
-      tipoBtns.forEach((b, i) => {
-        if (i === indice) {
-          b.classList.add('active');
-          b.setAttribute('aria-checked', 'true');
-          b.setAttribute('tabindex', '0');
-          tipoInput.value = b.dataset.tipo;
+      function mostrarUsuarios() {
+        usuariosTabla.innerHTML = "";
+        usuarios.forEach((usuario, i) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${usuario.correo}</td>
+            <td style="text-transform: capitalize;">${usuario.tipo}</td>
+            <td>
+              <button class="action-btn" data-accion="editar" data-index="${i}" aria-label="Editar usuario ${usuario.correo}">Editar</button>
+              <button class="action-btn" data-accion="eliminar" data-index="${i}" aria-label="Eliminar usuario ${usuario.correo}">Eliminar</button>
+            </td>
+          `;
+          usuariosTabla.appendChild(tr);
+        });
+      }
+
+      function abrirModal(editar = false, index = null) {
+        modal.classList.add("active");
+        if (editar) {
+          modalTitulo.textContent = "Editar Usuario";
+          const usuario = usuarios[index];
+          correoInput.value = usuario.correo;
+          tipoSelect.value = usuario.tipo;
+          editarIndex = index;
+          correoInput.disabled = true; // No se puede cambiar correo al editar para mantener consistencia
         } else {
-          b.classList.remove('active');
-          b.setAttribute('aria-checked', 'false');
-          b.setAttribute('tabindex', '-1');
+          modalTitulo.textContent = "Agregar Usuario";
+          formUsuario.reset();
+          editarIndex = null;
+          correoInput.disabled = false;
+        }
+        correoInput.focus();
+      }
+
+      function cerrarModal() {
+        modal.classList.remove("active");
+      }
+
+      // Evento para botones editar/eliminar dentro de la tabla
+      usuariosTabla.addEventListener("click", e => {
+        if (e.target.tagName === "BUTTON") {
+          const accion = e.target.dataset.accion;
+          const index = Number(e.target.dataset.index);
+          if (accion === "editar") {
+            abrirModal(true, index);
+          } else if (accion === "eliminar") {
+            if (confirm(`¿Seguro que deseas eliminar al usuario ${usuarios[index].correo}?`)) {
+              usuarios.splice(index, 1);
+              mostrarUsuarios();
+            }
+          }
         }
       });
-    }
 
-    // Lista usuarios y contraseñas
-    const usuarios = {
-      estudiante: [
-        { correo: 'juantorres@dsicolegio.edu.pe', pass: 'juanT7213' },
-        { correo: 'analopez@dsicolegio.edu.pe', pass: 'anaL7213' },
-        { correo: 'diegocruz@dsicolegio.edu.pe', pass: 'diegoC7213' },
-        { correo: 'marisaruiz@dsicolegio.edu.pe', pass: 'marisaR7213' },
-        { correo: 'luiszapata@dsicolegio.edu.pe', pass: 'luisZ7213' },
-        { correo: 'karenflores@dsicolegio.edu.pe', pass: 'karenF7213' },
-        { correo: 'josemendoza@dsicolegio.edu.pe', pass: 'joseM7213' },
-        { correo: 'elenaramirez@dsicolegio.edu.pe', pass: 'elenaR7213' },
-        { correo: 'francoherrera@dsicolegio.edu.pe', pass: 'francoH7213' },
-        { correo: 'nataliasalas@dsicolegio.edu.pe', pass: 'nataliaS7213' }
-      ],
-      docente: [
-        { correo: 'carlostorres@dsicolegio.edu.pe', pass: 'carlosT4512' },
-        { correo: 'miriamquiroz@dsicolegio.edu.pe', pass: 'miriamQ4523' },
-        { correo: 'josealvarez@dsicolegio.edu.pe', pass: 'joseA4534' },
-        { correo: 'sandraramirez@dsicolegio.edu.pe', pass: 'sandraR4545' },
-        { correo: 'julioflores@dsicolegio.edu.pe', pass: 'julioF4556' },
-        { correo: 'teresahuaman@dsicolegio.edu.pe', pass: 'teresaH4567' },
-        { correo: 'miguelvargas@dsicolegio.edu.pe', pass: 'miguelV4578' },
-        { correo: 'rosarioparedes@dsicolegio.edu.pe', pass: 'rosarioP4589' },
-        { correo: 'henrycastaneda@dsicolegio.edu.pe', pass: 'henryC4590' },
-        { correo: 'carlavalverde@dsicolegio.edu.pe', pass: 'carlaV4601' }
-      ],
-      administrador: [
-        { correo: 'veronicapalomino@dsicolegio.edu.pe', pass: 'veronicaP6123' },
-        { correo: 'martingutierrez@dsicolegio.edu.pe', pass: 'martinG6134' }
-      ]
-    };
+      // Abrir modal para agregar usuario
+      btnAgregar.addEventListener("click", () => abrirModal(false));
 
-    document.getElementById('form-login').addEventListener('submit', function(e) {
-      e.preventDefault();
+      // Cerrar modal con botón cancelar
+      btnCancelar.addEventListener("click", cerrarModal);
 
-      const tipo = tipoInput.value.toLowerCase();
-      const usuario = document.getElementById('usuario').value.trim().toLowerCase();
-      const contrasena = document.getElementById('contrasena').value;
+      // Refrescar tabla
+      btnRefrescar.addEventListener("click", mostrarUsuarios);
 
-      if (!tipo) {
-        alert("Por favor, seleccione un tipo de usuario.");
-        return;
-      }
+      // Guardar usuario al enviar formulario
+      formUsuario.addEventListener("submit", e => {
+        e.preventDefault();
+        const correo = correoInput.value.trim().toLowerCase();
+        const tipo = tipoSelect.value;
 
-      if (!usuario || !contrasena) {
-        alert("Por favor, complete todos los campos.");
-        return;
-      }
-
-      const listaUsuarios = usuarios[tipo];
-      if (!listaUsuarios) {
-        alert("Tipo de usuario no válido.");
-        return;
-      }
-
-      const usuarioValido = listaUsuarios.find(u => u.correo.toLowerCase() === usuario && u.pass === contrasena);
-
-      if (usuarioValido) {
-        // Usuario y contraseña válidos, redirigir según tipo
-        switch (tipo) {
-          case 'administrador':
-            window.location.href = 'administrativo.html';
-            break;
-          case 'docente':
-            window.location.href = 'instructor.html';
-            break;
-          case 'estudiante':
-            window.location.href = 'alumno.html';
-            break;
-          default:
-            alert("Tipo de usuario desconocido.");
+        // Validar correo no repetido al agregar nuevo
+        if (editarIndex === null && usuarios.some(u => u.correo === correo)) {
+          alert("Ya existe un usuario con ese correo.");
+          return;
         }
-      } else {
-        alert("Usuario o contraseña incorrectos.");
-      }
-    });
+
+        if (editarIndex !== null) {
+          usuarios[editarIndex].tipo = tipo;
+        } else {
+          usuarios.push({ correo, tipo });
+        }
+
+        mostrarUsuarios();
+        cerrarModal();
+      });
+
+      // Cerrar modal con Escape
+      window.addEventListener("keydown", e => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+          cerrarModal();
+        }
+      });
+
+      // Inicializar lista usuarios
+      mostrarUsuarios();
+    })();
   </script>
 </body>
 </html>
