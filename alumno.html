@@ -1,13 +1,447 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Alumno - Bienvenida</title>
-  <style>body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }</style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panel de Alumno - Con barra lateral</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  html, body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: #0e1a2b;
+    color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Fondo con símbolos */
+  .falling-symbols {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .symbol {
+    position: absolute;
+    top: -50px;
+    font-size: 18px;
+    opacity: 0.15;
+    color: #61dafb;
+    user-select: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.15;
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Panel principal */
+  #panelAlumno {
+    position: relative;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border-radius: 18px;
+    width: 720px;
+    height: 80vh;
+    display: flex;
+    overflow: hidden;
+    color: #caf0f8;
+  }
+
+  /* Barra lateral izquierda */
+  #barraLateral {
+    width: 220px;
+    background: rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255,255,255,0.2);
+    padding: 25px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+
+  #barraLateral h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-weight: 700;
+    color: #61dafb;
+    text-align: center;
+  }
+
+  #listaAcciones {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  #listaAcciones li {
+    margin-bottom: 16px;
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: #90e0ef;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #listaAcciones li:hover,
+  #listaAcciones li.activo {
+    background-color: #0077b6;
+    color: #caf0f8;
+  }
+
+  /* Zona derecha contenido */
+  #contenidoDerecho {
+    flex-grow: 1;
+    padding: 30px 35px;
+    overflow-y: auto;
+  }
+
+  /* Scroll personalizado */
+  #contenidoDerecho::-webkit-scrollbar {
+    width: 8px;
+  }
+  #contenidoDerecho::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #contenidoDerecho::-webkit-scrollbar-thumb {
+    background: #0077b6aa;
+    border-radius: 10px;
+  }
+
+  h2, h3 {
+    margin-top: 0;
+    font-weight: 700;
+  }
+
+  h2 {
+    color: #61dafb;
+    user-select: none;
+  }
+
+  /* Secciones de contenido */
+  section {
+    animation: fadeInSlide 0.7s ease forwards;
+  }
+
+  @keyframes fadeInSlide {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  /* Tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    color: #caf0f8;
+  }
+
+  th, td {
+    padding: 10px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+  }
+
+  th {
+    background-color: #0077b6;
+    font-weight: 600;
+    border-radius: 6px 6px 0 0;
+  }
+
+  /* Botones */
+  button {
+    background-color: #0096c7;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #023e8a;
+  }
+
+  label {
+    font-weight: 600;
+    margin-top: 12px;
+    display: block;
+    color: #90e0ef;
+  }
+
+  textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: rgba(255,255,255,0.1);
+    color: #caf0f8;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-top: 6px;
+    min-height: 80px;
+  }
+
+  textarea::placeholder {
+    color: #ade8f4;
+    font-style: italic;
+  }
+
+  /* Notificaciones */
+  .notification {
+    background: #38b00099;
+    border: 1px solid #16a34a;
+    padding: 14px;
+    margin-top: 20px;
+    border-radius: 12px;
+    color: #b7f1b1;
+    font-weight: 700;
+    text-align: center;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .notification.error {
+    background: #d9042999;
+    border-color: #dc2626;
+    color: #fca5a5;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  /* Imagen mono bailando */
+  .mono-bailando {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .mono-bailando img {
+    max-width: 220px;
+    width: 100%;
+    border-radius: 12px;
+  }
+
+</style>
 </head>
 <body>
-  <h1>Bienvenido Alumno</h1>
-  <p>Has iniciado sesión correctamente.</p>
-  <button onclick="location.href='index.html'">Cerrar sesión</button>
+
+<div class="falling-symbols" aria-hidden="true"></div>
+
+<div id="panelAlumno" role="main" aria-label="Panel de alumno">
+
+  <nav id="barraLateral" aria-label="Menú de acciones del alumno">
+    <h3>Acciones</h3>
+    <ul id="listaAcciones" role="list">
+      <li tabindex="0" class="activo" data-seccion="inicio">Inicio</li>
+      <li tabindex="0" data-seccion="datos">Consultar Datos</li>
+      <li tabindex="0" data-seccion="cursos">Cursos Inscritos</li>
+      <li tabindex="0" data-seccion="calificaciones">Calificaciones</li>
+      <li tabindex="0" data-seccion="mensaje">Enviar Mensaje</li>
+    </ul>
+  </nav>
+
+  <section id="contenidoDerecho" aria-live="polite">
+    <!-- Aquí se cargarán las secciones dinámicamente -->
+  </section>
+
+</div>
+
+<script>
+  const alumno = {
+    correo: 'alumno1@colegio.edu.pe',
+    nombre: 'Carlos Torres',
+    cursos: [
+      { nombre: 'Matemáticas', instructor: 'Profa. Ana' },
+      { nombre: 'Programación', instructor: 'Ing. Pérez' },
+      { nombre: 'Física', instructor: 'Prof. Gómez' },
+      { nombre: 'Química', instructor: 'Dra. Ruiz' },
+      { nombre: 'Historia', instructor: 'Profa. López' }
+    ],
+    calificaciones: [
+      { curso: 'Matemáticas', nota: 17 },
+      { curso: 'Programación', nota: 19 },
+      { curso: 'Física', nota: 16 },
+      { curso: 'Química', nota: 18 },
+      { curso: 'Historia', nota: 15 }
+    ]
+  };
+
+  // Elementos DOM
+  const listaAcciones = document.getElementById('listaAcciones');
+  const contenidoDerecho = document.getElementById('contenidoDerecho');
+
+  // Funciones para mostrar cada sección
+  function mostrarInicio() {
+    contenidoDerecho.innerHTML = `
+      <h2>Bienvenido, ${alumno.nombre}!</h2>
+      <p>Este es tu panel de alumno. Usa el menú a la izquierda para navegar entre las diferentes opciones.</p>
+      <div class="mono-bailando" aria-label="Mono bailando">
+        <img src="https://media.giphy.com/media/3o7aD6vKqhtGHBO9X2/giphy.gif" alt="Mono bailando animado" />
+      </div>
+    `;
+  }
+
+  function mostrarDatos() {
+    contenidoDerecho.innerHTML = `
+      <h2>Datos del Alumno</h2>
+      <table>
+        <tbody>
+          <tr><th>Nombre</th><td>${alumno.nombre}</td></tr>
+          <tr><th>Correo</th><td>${alumno.correo}</td></tr>
+        </tbody>
+      </table>
+    `;
+  }
+
+  function mostrarCursos() {
+    const filas = alumno.cursos.map(c => `<tr><td>${c.nombre}</td><td>${c.instructor}</td></tr>`).join('');
+    contenidoDerecho.innerHTML = `
+      <h2>Cursos Inscritos</h2>
+      <table>
+        <thead><tr><th>Curso</th><th>Instructor</th></tr></thead>
+        <tbody>${filas}</tbody>
+      </table>
+    `;
+  }
+
+  function mostrarCalificaciones() {
+    const filas = alumno.calificaciones.map(c => `<tr><td>${c.curso}</td><td>${c.nota}</td></tr>`).join('');
+    contenidoDerecho.innerHTML = `
+      <h2>Calificaciones</h2>
+      <table>
+        <thead><tr><th>Curso</th><th>Nota</th></tr></thead>
+        <tbody>${filas}</tbody>
+      </table>
+    `;
+  }
+
+  function mostrarEnviarMensaje() {
+    contenidoDerecho.innerHTML = `
+      <h2>Enviar Mensaje</h2>
+      <form id="formMensaje" aria-label="Formulario para enviar mensaje">
+        <label for="mensajeTexto">Mensaje:</label>
+        <textarea id="mensajeTexto" placeholder="Escribe tu mensaje aquí..." required></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="notificacion" role="alert" aria-live="assertive" style="display:none;"></div>
+    `;
+
+    const form = document.getElementById('formMensaje');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const mensaje = document.getElementById('mensajeTexto').value.trim();
+
+      if (mensaje.length === 0) {
+        mostrarNotificacion('Por favor escribe un mensaje antes de enviar.', true);
+        return;
+      }
+
+      mostrarNotificacion('Enviando mensaje...');
+      setTimeout(() => {
+        mostrarNotificacion('Mensaje enviado correctamente.');
+        form.reset();
+      }, 1500);
+    });
+  }
+
+  function mostrarNotificacion(texto, esError = false) {
+    const noti = document.getElementById('notificacion');
+    if (!noti) return;
+    noti.textContent = texto;
+    noti.className = 'notification' + (esError ? ' error' : '');
+    noti.style.display = 'block';
+
+    if (!esError) {
+      setTimeout(() => {
+        noti.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  // Manejo del menú lateral
+  listaAcciones.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'LI') return;
+
+    // Quitar clase activo en todos
+    Array.from(listaAcciones.children).forEach(li => li.classList.remove('activo'));
+
+    // Poner activo en el clickeado
+    e.target.classList.add('activo');
+
+    // Mostrar la sección correspondiente
+    const seccion = e.target.getAttribute('data-seccion');
+    switch(seccion) {
+      case 'inicio': mostrarInicio(); break;
+      case 'datos': mostrarDatos(); break;
+      case 'cursos': mostrarCursos(); break;
+      case 'calificaciones': mostrarCalificaciones(); break;
+      case 'mensaje': mostrarEnviarMensaje(); break;
+    }
+  });
+
+  // También se puede navegar con teclado (Enter/Space)
+  listaAcciones.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.tagName === 'LI') {
+      e.preventDefault();
+      e.target.click();
+    }
+  });
+
+  // Mostrar inicio por defecto
+  mostrarInicio();
+
+  // Animación fondo símbolos caídos
+  const symbolsContainer = document.querySelector('.falling-symbols');
+  const symbols = ['%', '$', '#', '@', '&', '*', '!', '?', '>', '<', '≈', '∞'];
+
+  function crearSimbolo() {
+    const span = document.createElement('span');
+    span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    span.classList.add('symbol');
+    span.style.left = Math.random() * window.innerWidth + 'px';
+    span.style.fontSize = (12 + Math.random() * 20) + 'px';
+    span.style.animationDuration = (5 + Math.random() * 10) + 's';
+    span.style.opacity = (0.1 + Math.random() * 0.2).toFixed(2);
+    symbolsContainer.appendChild(span);
+
+    setTimeout(() => {
+      if (symbolsContainer.contains(span)) {
+        symbolsContainer.removeChild(span);
+      }
+    }, 15000);
+  }
+
+  setInterval(crearSimbolo, 500);
+</script>
 </body>
 </html>
