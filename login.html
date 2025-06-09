@@ -4,85 +4,188 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar Sesión - Colegio Data Systems Ingenieros</title>
-  <link rel="stylesheet" href="estilos.css" />
   <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     body {
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      color: #fff;
+      background: #0f2027;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Fondo espiral animado */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 120vmax;
+      height: 120vmax;
+      background: conic-gradient(
+        from 0deg,
+        #00e5ff 0deg 45deg,
+        transparent 45deg 90deg,
+        #00e5ff 90deg 135deg,
+        transparent 135deg 180deg,
+        #00e5ff 180deg 225deg,
+        transparent 225deg 270deg,
+        #00e5ff 270deg 315deg,
+        transparent 315deg 360deg
+      );
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: girar 60s linear infinite;
+      opacity: 0.12;
+      z-index: -1;
+      filter: blur(40px);
+    }
+
+    @keyframes girar {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
     }
 
     .login-container {
-      background: rgba(0,0,0,0.5);
-      padding: 30px;
-      border-radius: 10px;
-      width: 350px;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 40px 30px;
+      border-radius: 15px;
+      width: 360px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
       text-align: center;
+      transition: background-color 0.3s ease;
+      z-index: 1;
+      position: relative;
+    }
+
+    .login-container:hover {
+      background: rgba(0, 0, 0, 0.85);
     }
 
     .login-container h2 {
-      margin-bottom: 20px;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff;
     }
 
     .user-type-buttons {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 30px;
     }
 
     .user-type-buttons button {
       flex: 1;
-      margin: 0 5px;
-      padding: 10px;
+      padding: 12px 0;
       border: none;
-      background: #00bcd4;
-      color: white;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #00bcd4;
+      background: rgba(0, 188, 212, 0.15);
       cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      box-shadow: inset 0 0 0 2px #00bcd4;
+      user-select: none;
+    }
+
+    .user-type-buttons button:hover:not(.active) {
+      background-color: #00bcd4;
+      color: #fff;
+      box-shadow: 0 0 12px #00bcd4;
     }
 
     .user-type-buttons button.active {
-      background: #00796b;
+      background-color: #00796b;
+      color: #e0f7fa;
+      box-shadow: 0 0 15px #00796b;
     }
 
-    .login-container input {
-      display: block;
+    form input[type="text"],
+    form input[type="password"] {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 14px 15px;
+      margin-bottom: 18px;
+      border-radius: 8px;
       border: none;
-      border-radius: 5px;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow 0.3s ease;
     }
 
-    .login-container button.submit-btn {
-      background: #4caf50;
+    form input[type="text"]:focus,
+    form input[type="password"]:focus {
+      box-shadow: 0 0 10px #00bcd4;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
       color: white;
-      padding: 10px;
+      background: linear-gradient(45deg, #4caf50, #087f23);
       border: none;
-      width: 100%;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 10px;
+      box-shadow: 0 5px 15px rgba(72, 180, 97, 0.6);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(45deg, #087f23, #4caf50);
+      box-shadow: 0 8px 20px rgba(72, 180, 97, 0.9);
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .login-container {
+        width: 90%;
+        padding: 30px 20px;
+      }
+
+      .user-type-buttons button {
+        font-size: 0.9rem;
+        padding: 10px 0;
+      }
+
+      .submit-btn {
+        font-size: 1rem;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
+  <div class="login-container" role="main" aria-label="Formulario de inicio de sesión">
     <h2>Iniciar Sesión como:</h2>
-    <div class="user-type-buttons">
-      <button type="button" class="tipo-btn" data-tipo="administrador">Administrador</button>
-      <button type="button" class="tipo-btn" data-tipo="docente">Docente</button>
-      <button type="button" class="tipo-btn" data-tipo="estudiante">Estudiante</button>
+    <div class="user-type-buttons" role="radiogroup" aria-label="Seleccionar tipo de usuario">
+      <button type="button" class="tipo-btn" data-tipo="administrador" role="radio" aria-checked="false" tabindex="0">Administrador</button>
+      <button type="button" class="tipo-btn" data-tipo="docente" role="radio" aria-checked="false" tabindex="-1">Docente</button>
+      <button type="button" class="tipo-btn" data-tipo="estudiante" role="radio" aria-checked="false" tabindex="-1">Estudiante</button>
     </div>
 
-    <form id="form-login">
-      <input type="text" id="usuario" placeholder="Usuario (correo)" required />
-      <input type="password" id="contrasena" placeholder="Contraseña" required />
+    <form id="form-login" aria-describedby="form-instructions">
+      <p id="form-instructions" class="sr-only">Complete el usuario y la contraseña, y seleccione el tipo de usuario.</p>
+      <input type="text" id="usuario" placeholder="Usuario (correo)" required aria-required="true" autocomplete="username" />
+      <input type="password" id="contrasena" placeholder="Contraseña" required aria-required="true" autocomplete="current-password" />
       <input type="hidden" id="tipo-usuario" name="tipo" value="" />
       <button type="submit" class="submit-btn">Iniciar Sesión</button>
     </form>
@@ -92,16 +195,43 @@
     const tipoBtns = document.querySelectorAll('.tipo-btn');
     const tipoInput = document.getElementById('tipo-usuario');
 
-    tipoBtns.forEach(btn => {
+    // Función para manejar selección con teclado y mouse
+    tipoBtns.forEach((btn, idx) => {
       btn.addEventListener('click', () => {
-        tipoBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        tipoInput.value = btn.dataset.tipo;
+        seleccionarTipo(idx);
+      });
+
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          let nextIdx = (idx + 1) % tipoBtns.length;
+          tipoBtns[nextIdx].focus();
+          seleccionarTipo(nextIdx);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          let prevIdx = (idx - 1 + tipoBtns.length) % tipoBtns.length;
+          tipoBtns[prevIdx].focus();
+          seleccionarTipo(prevIdx);
+        }
       });
     });
 
-    // Listas de usuarios y contraseñas (correo y password) por tipo
+    function seleccionarTipo(indice) {
+      tipoBtns.forEach((b, i) => {
+        if (i === indice) {
+          b.classList.add('active');
+          b.setAttribute('aria-checked', 'true');
+          b.setAttribute('tabindex', '0');
+          tipoInput.value = b.dataset.tipo;
+        } else {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+          b.setAttribute('tabindex', '-1');
+        }
+      });
+    }
 
+    // Lista usuarios y contraseñas
     const usuarios = {
       estudiante: [
         { correo: 'juantorres@dsicolegio.edu.pe', pass: 'juanT7213' },
@@ -171,10 +301,10 @@
             window.location.href = 'alumno.html';
             break;
           default:
-            alert('Tipo de usuario no válido');
+            alert("Tipo de usuario desconocido.");
         }
       } else {
-        alert('Usuario o contraseña incorrectos para el tipo seleccionado.');
+        alert("Usuario o contraseña incorrectos.");
       }
     });
   </script>
