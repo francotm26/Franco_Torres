@@ -2,12 +2,311 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Administrativo - Bienvenida</title>
-  <style>body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar Sesión - Colegio Data Systems Ingenieros</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      background: #0f2027;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Fondo espiral animado */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 120vmax;
+      height: 120vmax;
+      background: conic-gradient(
+        from 0deg,
+        #00e5ff 0deg 45deg,
+        transparent 45deg 90deg,
+        #00e5ff 90deg 135deg,
+        transparent 135deg 180deg,
+        #00e5ff 180deg 225deg,
+        transparent 225deg 270deg,
+        #00e5ff 270deg 315deg,
+        transparent 315deg 360deg
+      );
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: girar 60s linear infinite;
+      opacity: 0.12;
+      z-index: -1;
+      filter: blur(40px);
+    }
+
+    @keyframes girar {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    .login-container {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 40px 30px;
+      border-radius: 15px;
+      width: 360px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      transition: background-color 0.3s ease;
+      z-index: 1;
+      position: relative;
+    }
+
+    .login-container:hover {
+      background: rgba(0, 0, 0, 0.85);
+    }
+
+    .login-container h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff;
+    }
+
+    .user-type-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .user-type-buttons button {
+      flex: 1;
+      padding: 12px 0;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #00bcd4;
+      background: rgba(0, 188, 212, 0.15);
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      box-shadow: inset 0 0 0 2px #00bcd4;
+      user-select: none;
+    }
+
+    .user-type-buttons button:hover:not(.active) {
+      background-color: #00bcd4;
+      color: #fff;
+      box-shadow: 0 0 12px #00bcd4;
+    }
+
+    .user-type-buttons button.active {
+      background-color: #00796b;
+      color: #e0f7fa;
+      box-shadow: 0 0 15px #00796b;
+    }
+
+    form input[type="text"],
+    form input[type="password"] {
+      width: 100%;
+      padding: 14px 15px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    form input[type="text"]:focus,
+    form input[type="password"]:focus {
+      box-shadow: 0 0 10px #00bcd4;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(45deg, #4caf50, #087f23);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(72, 180, 97, 0.6);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(45deg, #087f23, #4caf50);
+      box-shadow: 0 8px 20px rgba(72, 180, 97, 0.9);
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .login-container {
+        width: 90%;
+        padding: 30px 20px;
+      }
+
+      .user-type-buttons button {
+        font-size: 0.9rem;
+        padding: 10px 0;
+      }
+
+      .submit-btn {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Bienvenido Administrativo</h1>
-  <p>Has iniciado sesión correctamente.</p>
-  <button onclick="location.href='index.html'">Cerrar sesión</button>
+  <div class="login-container" role="main" aria-label="Formulario de inicio de sesión">
+    <h2>Iniciar Sesión como:</h2>
+    <div class="user-type-buttons" role="radiogroup" aria-label="Seleccionar tipo de usuario">
+      <button type="button" class="tipo-btn" data-tipo="administrador" role="radio" aria-checked="false" tabindex="0">Administrador</button>
+      <button type="button" class="tipo-btn" data-tipo="docente" role="radio" aria-checked="false" tabindex="-1">Docente</button>
+      <button type="button" class="tipo-btn" data-tipo="estudiante" role="radio" aria-checked="false" tabindex="-1">Estudiante</button>
+    </div>
+
+    <form id="form-login" aria-describedby="form-instructions">
+      <p id="form-instructions" class="sr-only">Complete el usuario y la contraseña, y seleccione el tipo de usuario.</p>
+      <input type="text" id="usuario" placeholder="Usuario (correo)" required aria-required="true" autocomplete="username" />
+      <input type="password" id="contrasena" placeholder="Contraseña" required aria-required="true" autocomplete="current-password" />
+      <input type="hidden" id="tipo-usuario" name="tipo" value="" />
+      <button type="submit" class="submit-btn">Iniciar Sesión</button>
+    </form>
+  </div>
+
+  <script>
+    const tipoBtns = document.querySelectorAll('.tipo-btn');
+    const tipoInput = document.getElementById('tipo-usuario');
+
+    // Función para manejar selección con teclado y mouse
+    tipoBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        seleccionarTipo(idx);
+      });
+
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          let nextIdx = (idx + 1) % tipoBtns.length;
+          tipoBtns[nextIdx].focus();
+          seleccionarTipo(nextIdx);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          let prevIdx = (idx - 1 + tipoBtns.length) % tipoBtns.length;
+          tipoBtns[prevIdx].focus();
+          seleccionarTipo(prevIdx);
+        }
+      });
+    });
+
+    function seleccionarTipo(indice) {
+      tipoBtns.forEach((b, i) => {
+        if (i === indice) {
+          b.classList.add('active');
+          b.setAttribute('aria-checked', 'true');
+          b.setAttribute('tabindex', '0');
+          tipoInput.value = b.dataset.tipo;
+        } else {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+          b.setAttribute('tabindex', '-1');
+        }
+      });
+    }
+
+    // Lista usuarios y contraseñas
+    const usuarios = {
+      estudiante: [
+        { correo: 'juantorres@dsicolegio.edu.pe', pass: 'juanT7213' },
+        { correo: 'analopez@dsicolegio.edu.pe', pass: 'anaL7213' },
+        { correo: 'diegocruz@dsicolegio.edu.pe', pass: 'diegoC7213' },
+        { correo: 'marisaruiz@dsicolegio.edu.pe', pass: 'marisaR7213' },
+        { correo: 'luiszapata@dsicolegio.edu.pe', pass: 'luisZ7213' },
+        { correo: 'karenflores@dsicolegio.edu.pe', pass: 'karenF7213' },
+        { correo: 'josemendoza@dsicolegio.edu.pe', pass: 'joseM7213' },
+        { correo: 'elenaramirez@dsicolegio.edu.pe', pass: 'elenaR7213' },
+        { correo: 'francoherrera@dsicolegio.edu.pe', pass: 'francoH7213' },
+        { correo: 'nataliasalas@dsicolegio.edu.pe', pass: 'nataliaS7213' }
+      ],
+      docente: [
+        { correo: 'carlostorres@dsicolegio.edu.pe', pass: 'carlosT4512' },
+        { correo: 'miriamquiroz@dsicolegio.edu.pe', pass: 'miriamQ4523' },
+        { correo: 'josealvarez@dsicolegio.edu.pe', pass: 'joseA4534' },
+        { correo: 'sandraramirez@dsicolegio.edu.pe', pass: 'sandraR4545' },
+        { correo: 'julioflores@dsicolegio.edu.pe', pass: 'julioF4556' },
+        { correo: 'teresahuaman@dsicolegio.edu.pe', pass: 'teresaH4567' },
+        { correo: 'miguelvargas@dsicolegio.edu.pe', pass: 'miguelV4578' },
+        { correo: 'rosarioparedes@dsicolegio.edu.pe', pass: 'rosarioP4589' },
+        { correo: 'henrycastaneda@dsicolegio.edu.pe', pass: 'henryC4590' },
+        { correo: 'carlavalverde@dsicolegio.edu.pe', pass: 'carlaV4601' }
+      ],
+      administrador: [
+        { correo: 'veronicapalomino@dsicolegio.edu.pe', pass: 'veronicaP6123' },
+        { correo: 'martingutierrez@dsicolegio.edu.pe', pass: 'martinG6134' }
+      ]
+    };
+
+    document.getElementById('form-login').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const tipo = tipoInput.value.toLowerCase();
+      const usuario = document.getElementById('usuario').value.trim().toLowerCase();
+      const contrasena = document.getElementById('contrasena').value;
+
+      if (!tipo) {
+        alert("Por favor, seleccione un tipo de usuario.");
+        return;
+      }
+
+      if (!usuario || !contrasena) {
+        alert("Por favor, complete todos los campos.");
+        return;
+      }
+
+      const listaUsuarios = usuarios[tipo];
+      if (!listaUsuarios) {
+        alert("Tipo de usuario no válido.");
+        return;
+      }
+
+      const usuarioValido = listaUsuarios.find(u => u.correo.toLowerCase() === usuario && u.pass === contrasena);
+
+      if (usuarioValido) {
+        // Usuario y contraseña válidos, redirigir según tipo
+        switch (tipo) {
+          case 'administrador':
+            window.location.href = 'administrativo.html';
+            break;
+          case 'docente':
+            window.location.href = 'instructor.html';
+            break;
+          case 'estudiante':
+            window.location.href = 'alumno.html';
+            break;
+          default:
+            alert("Tipo de usuario desconocido.");
+        }
+      } else {
+        alert("Usuario o contraseña incorrectos.");
+      }
+    });
+  </script>
 </body>
 </html>
