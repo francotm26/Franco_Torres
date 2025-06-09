@@ -16,6 +16,37 @@
     #asistente-virtual {
       display: none;
     }
+
+    /* Fondo burbujas */
+    #background-bubbles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+      background: #0d47a1; /* azul oscuro de fondo, ajusta al gusto */
+    }
+    #background-bubbles .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      animation-name: rise;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+    @keyframes rise {
+      0% {
+        transform: translateY(0);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -23,22 +54,23 @@
   <div id="background-bubbles"></div>
 
   <!-- Encabezado con video -->
-  <header>
-    <video autoplay muted loop playsinline id="bg-video">
-      <source src="tu_video.mp4" type="video/mp4" />
-      Tu navegador no soporta videos HTML5.
-    </video>
-    <div class="encabezado-texto">
-      <h1 id="titulo">Colegio Data Systems Ingenieros</h1>
-      <p class="frase">
-        Data Systems: donde el talento y la tecnología se conectan para transformar tu historia en un éxito.
-      </p>
-    </div>
+<header>
+  <video autoplay muted loop playsinline id="bg-video" preload="auto">
+    <source src="tu_video.mp4" type="video/mp4" />
+    Tu navegador no soporta videos HTML5.
+  </video>
+  <div class="encabezado-texto">
+    <h1 id="titulo">Colegio Data Systems Ingenieros</h1>
+    <p class="frase">
+      Data Systems: donde el talento y la tecnología se conectan para transformar tu historia en un éxito.
+    </p>
     <a href="login.html" class="btn-login">Iniciar Sesión</a>
-  </header>
+  </div>
+</header>
+
 
   <!-- Botón flotante para cambiar modo -->
-  <button id="modoToggle" title="Cambiar modo" aria-label="Cambiar modo oscuro">
+  <button id="modoToggle" title="Cambiar modo" aria-label="Cambiar modo oscuro" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 10;">
     <span id="iconoModo">🌙</span>
   </button>
 
@@ -150,6 +182,27 @@
 
       // Mostrar asistente virtual al cargar
       document.getElementById("asistente-virtual").style.display = "block";
+
+      // Crear burbujas animadas
+      const background = document.getElementById("background-bubbles");
+      const bubblesCount = 40;
+
+      for (let i = 0; i < bubblesCount; i++) {
+        const bubble = document.createElement("div");
+        bubble.classList.add("bubble");
+        // Tamaño aleatorio 10px a 40px
+        const size = Math.random() * 30 + 10;
+        bubble.style.width = size + "px";
+        bubble.style.height = size + "px";
+        // Posición horizontal aleatoria dentro de la pantalla
+        bubble.style.left = Math.random() * 100 + "vw";
+        // Velocidad y duración de subida aleatoria para la animación rise
+        const duration = Math.random() * 10 + 10; // 10s a 20s
+        bubble.style.animationDuration = duration + "s";
+        // Delay para escalonar las burbujas
+        bubble.style.animationDelay = (Math.random() * 20) + "s";
+        background.appendChild(bubble);
+      }
     });
   </script>
 </body>
