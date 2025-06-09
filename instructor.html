@@ -1,13 +1,322 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Instructor - Bienvenida</title>
-  <style>body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }</style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panel Instructor</title>
+<style>
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #barraLateral {
+    width: 280px;
+    background: linear-gradient(180deg, #333 0%, #111 100%);
+    padding: 15px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+  #barraLateral h1 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #fff;
+  }
+  #listaAcciones {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  #listaAcciones li {
+    padding: 12px 18px;
+    margin: 6px 0;
+    background: #222;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+  #listaAcciones li:focus, #listaAcciones li:hover {
+    background: #005f99;
+    outline: none;
+  }
+  #listaAcciones li svg {
+    width: 22px;
+    height: 22px;
+    fill: #66ccff;
+  }
+  #contenidoDerecho {
+    flex-grow: 1;
+    background: linear-gradient(180deg, #1b1b1b 0%, #050505 100%);
+    padding: 20px 30px;
+    overflow-y: auto;
+  }
+  h2, h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #005f99;
+    padding-bottom: 6px;
+    color: #66ccff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  table th, table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #444;
+    text-align: left;
+  }
+  table thead {
+    background: #005f99;
+    color: #fff;
+  }
+  button {
+    background: #0088cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #005f99;
+  }
+  form input[type="file"] {
+    margin-right: 12px;
+  }
+  ul#listaTrabajos {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  ul#listaTrabajos li {
+    margin-bottom: 10px;
+  }
+  ul#listaTrabajos button {
+    margin-left: 15px;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+  }
+  .notification {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #007acc;
+    border-radius: 5px;
+    color: white;
+  }
+  .notification.error {
+    background: #cc3300;
+  }
+  /* Scrollbar */
+  #barraLateral::-webkit-scrollbar, #contenidoDerecho::-webkit-scrollbar {
+    width: 7px;
+  }
+  #barraLateral::-webkit-scrollbar-thumb, #contenidoDerecho::-webkit-scrollbar-thumb {
+    background-color: #005f99;
+    border-radius: 10px;
+  }
+</style>
 </head>
 <body>
-  <h1>Bienvenido Instructor</h1>
-  <p>Has iniciado sesión correctamente.</p>
-  <button onclick="location.href='index.html'">Cerrar sesión</button>
+
+<div id="barraLateral" role="navigation" aria-label="Menú de navegación lateral">
+  <h1>Panel Instructor</h1>
+  <ul id="listaAcciones" tabindex="0">
+    <li tabindex="0" data-seccion="inicio" aria-label="Ir a inicio">
+      <!-- Mono bailando SVG -->
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <circle cx="32" cy="32" r="30" fill="#66ccff"/>
+        <path fill="#fff" d="M42 22c-3 1-6-1-8-2s-2-2-4-2c-1 0-3 1-3 2s1 3 2 4 3 3 4 3 3-1 5-1c1 0 2 2 2 2s1-3 2-5z"/>
+        <circle cx="28" cy="20" r="3" fill="#004466"/>
+      </svg>
+      Inicio
+    </li>
+    <li tabindex="0" data-seccion="tareas" aria-label="Ver tareas">
+      📚 Tareas
+    </li>
+    <li tabindex="0" data-seccion="calificaciones" aria-label="Ver calificaciones">
+      📝 Calificaciones
+    </li>
+    <li tabindex="0" data-seccion="profesores" aria-label="Sección profesores">
+      👩‍🏫 Profesores
+    </li>
+  </ul>
+</div>
+
+<div id="contenidoDerecho" role="main" tabindex="0" aria-live="polite">
+  <!-- Contenido dinámico aquí -->
+</div>
+
+<script>
+  const listaAcciones = document.getElementById('listaAcciones');
+  const contenidoDerecho = document.getElementById('contenidoDerecho');
+
+  // Datos ejemplo para profesores y trabajos
+  const profesores = [
+    { nombre: 'Ana Pérez', asignatura: 'Matemáticas' },
+    { nombre: 'Luis García', asignatura: 'Física' },
+    { nombre: 'María López', asignatura: 'Química' }
+  ];
+
+  let trabajosPendientes = [
+    { id: 1, alumno: 'Carlos Torres', trabajo: 'Ensayo sobre física', corregido: false },
+    { id: 2, alumno: 'Lucía Fernández', trabajo: 'Problemas matemáticos', corregido: false },
+    { id: 3, alumno: 'José Martínez', trabajo: 'Informe de química', corregido: false }
+  ];
+
+  function mostrarInicio() {
+    contenidoDerecho.innerHTML = `
+      <h2>Inicio</h2>
+      <p>Bienvenido al panel de instructor.</p>
+      <div style="font-size:100px; text-align:center; margin-top:30px;" aria-hidden="true">
+        🐒💃
+      </div>
+      <p style="font-style: italic; margin-top:20px; text-align:center; color:#99dfff;">
+        ¡Aquí puedes administrar todas tus tareas y actividades!
+      </p>
+    `;
+  }
+
+  function mostrarTareas() {
+    contenidoDerecho.innerHTML = `
+      <h2>Tareas</h2>
+      <ul>
+        <li>Crear y asignar tareas a estudiantes</li>
+        <li>Ver entregas y fechas límite</li>
+        <li>Enviar recordatorios</li>
+      </ul>
+    `;
+  }
+
+  function mostrarCalificaciones() {
+    contenidoDerecho.innerHTML = `
+      <h2>Calificaciones</h2>
+      <ul>
+        <li>Registrar notas</li>
+        <li>Generar reportes de desempeño</li>
+        <li>Enviar comentarios personalizados</li>
+      </ul>
+    `;
+  }
+
+  function mostrarProfesores() {
+    let trabajosHTML = trabajosPendientes.map(t => `
+      <li>
+        <strong>${t.alumno}</strong> - ${t.trabajo} 
+        ${t.corregido ? '<em style="color:#4caf50;">(Corregido)</em>' : `<button data-id="${t.id}" class="btnCorregir">Marcar como corregido</button>`}
+      </li>
+    `).join('');
+
+    contenidoDerecho.innerHTML = `
+      <h2>Profesores</h2>
+      <table aria-label="Lista de profesores">
+        <thead><tr><th>Nombre</th><th>Asignatura</th></tr></thead>
+        <tbody>
+          ${profesores.map(p => `<tr><td>${p.nombre}</td><td>${p.asignatura}</td></tr>`).join('')}
+        </tbody>
+      </table>
+
+      <h3>Subir archivo</h3>
+      <form id="formSubirArchivo" aria-label="Formulario para subir archivo">
+        <input type="file" id="archivo" aria-required="true" />
+        <button type="submit">Subir</button>
+      </form>
+      <div id="notificacionArchivo" role="alert" aria-live="assertive" style="display:none; margin-top:10px;"></div>
+
+      <h3>Trabajos pendientes de corrección</h3>
+      <ul id="listaTrabajos" aria-live="polite">
+        ${trabajosHTML}
+      </ul>
+    `;
+
+    // Subir archivo (simulado)
+    const formArchivo = document.getElementById('formSubirArchivo');
+    const notiArchivo = document.getElementById('notificacionArchivo');
+
+    formArchivo.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const archivoInput = document.getElementById('archivo');
+      if (archivoInput.files.length === 0) {
+        mostrarNotificacionArchivo('Por favor selecciona un archivo.', true);
+        return;
+      }
+      mostrarNotificacionArchivo('Subiendo archivo...');
+      setTimeout(() => {
+        mostrarNotificacionArchivo(`Archivo "${archivoInput.files[0].name}" subido correctamente.`);
+        formArchivo.reset();
+      }, 1500);
+    });
+
+    function mostrarNotificacionArchivo(texto, esError = false) {
+      notiArchivo.textContent = texto;
+      notiArchivo.className = 'notification' + (esError ? ' error' : '');
+      notiArchivo.style.display = 'block';
+
+      if (!esError) {
+        setTimeout(() => {
+          notiArchivo.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // Corrección trabajos
+    const listaTrabajosElem = document.getElementById('listaTrabajos');
+    listaTrabajosElem.querySelectorAll('.btnCorregir').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(e.target.getAttribute('data-id'));
+        const trabajo = trabajosPendientes.find(t => t.id === id);
+        if (trabajo) {
+          trabajo.corregido = true;
+          mostrarProfesores(); // refresca la lista para actualizar estado
+        }
+      });
+    });
+  }
+
+  function cargarSeccion(seccion) {
+    switch(seccion) {
+      case 'inicio': mostrarInicio(); break;
+      case 'tareas': mostrarTareas(); break;
+      case 'calificaciones': mostrarCalificaciones(); break;
+      case 'profesores': mostrarProfesores(); break;
+      default: mostrarInicio();
+    }
+  }
+
+  listaAcciones.addEventListener('click', (e) => {
+    if (e.target.tagName === 'LI') {
+      const seccion = e.target.getAttribute('data-seccion');
+      cargarSeccion(seccion);
+      // Actualizar foco visual en menú
+      Array.from(listaAcciones.children).forEach(li => li.classList.remove('activo'));
+      e.target.classList.add('activo');
+    }
+  });
+
+  // Permitir navegación por teclado (Enter)
+  listaAcciones.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'LI' && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      e.target.click();
+    }
+  });
+
+  // Cargar inicio por defecto y resaltar
+  cargarSeccion('inicio');
+  listaAcciones.children[0].classList.add('activo');
+</script>
+
 </body>
 </html>
